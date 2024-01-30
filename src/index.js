@@ -26,7 +26,7 @@ async function connectToMongoDB() {
       useUnifiedTopology: false,
     });
 
-    console.log('Connected to MongoDB');
+    console.log('Connected to MongoDB==========>');
   } catch (error) {
     console.error('Error connecting to MongoDB:', error.message);
     // You may choose to throw the error or handle it in another way based on your application's needs
@@ -37,7 +37,7 @@ async function connectToMongoDB() {
 connectToMongoDB()
 .then(()=>{
   app.listen(process.env.PORT|| 3000, () => {
-      console.log(`server running on port ${process.env.PORT}`);
+      console.log(`server running on port=======> ${process.env.PORT}`);
     })
 })
 .catch((err)=>{
