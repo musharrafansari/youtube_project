@@ -89,27 +89,14 @@ userSchema.methods.generateAccessToken = function() {
         process.env.ACCESS_TOKEN_SECRET,
         {
             // expiresIn: process.env.ACCESS_TOKEN_EXPIRY
-            expiresIn: "3600"
+            // expiresIn: "86400"  // one day expiry time
+            expiresIn: '24h'
         }
     );
 
     return accessToken; // Return the generated token
 };
 
-// userSchema.methods.generateRefreshToken =function(){
-//     jwt.sign(
-//         {
-//             _id:this._id,     // less info because frequent refresh
-           
-//         },
-//         process.env.REFRESH_TOKEN_SECRET,
-//         {
-//             // expiresIn:process.env.REFRESH_TOKEN_EXPIRY
-//             expiresIn:"7200"
-//         }
-//     )
-   
-// }
 userSchema.methods.generateRefreshToken = function() {
    
     const refreshToken = jwt.sign(
@@ -118,13 +105,31 @@ userSchema.methods.generateRefreshToken = function() {
         },
         process.env.REFRESH_TOKEN_SECRET,
         {
-            expiresIn: "7200" 
+             // expiresIn:process.env.REFRESH_TOKEN_EXPIRY
+            expiresIn: "30h" 
         }
     );
 
    
     return refreshToken;
 };
+
+// userSchema.methods.generateRefreshToken =function(){
+//     jwt.sign(
+//         {
+//             _id:this._id,     // less info because frequent refresh
+//            
+//         },
+//         process.env.REFRESH_TOKEN_SECRET,
+//         {
+//             // expiresIn:process.env.REFRESH_TOKEN_EXPIRY
+//             // expiresIn:"1000000"   // more than one day expiry time
+//             expiresIn: '30h'
+//         }
+//     )
+   
+// }
+
 //  const User=mongoose.model("User",userSchema)
 // module.exports = User
 module.exports = mongoose.model("User", userSchema);
