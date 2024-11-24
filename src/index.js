@@ -18,6 +18,39 @@ const app=express()
 
   // console.log("====>",process.env.MONGO_URI)
 
+
+// ----------------
+
+//
+//
+const swaggerUi = require('swagger-ui-express');
+const YAML= require("yamljs")
+const swaggerJsdoc = YAML.load("./api.yaml")
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJsdoc));
+
+// const options = {
+//   definition: {
+//     openapi: '3.0.0',
+//     info: {
+//       title: 'Youtube System',
+//       version: '1.0.0',
+//       description: 'Youtube System covered Create, Read, Update, and Delete operations using a Node.js API',
+//     },
+//     servers:[
+//       {url:'http://localhost:5000'}, //you can change you server url
+//     ],
+//   },
+
+//   apis: ['./routes/*user.routes.js'], //you can change you swagger path
+// };
+
+// const specs = swaggerJsdoc(options);
+
+
+
+//-----------------
+
 async function connectToMongoDB() {
   try {
    
@@ -75,6 +108,7 @@ connectToMongoDB()
 // startServer();
 
 
+
 app.use(cors({
     origin:process.env.CORS_ORIGIN,
     credentials:true
@@ -92,11 +126,37 @@ app.use(cookieParser())
 app.use("/users",userRouter)
   
 
+//
+
 //   app.use("/",route)
-app.get("/get", (req, res) => {
-  res.send("message sent successfully.");
+app.get("/test", (req, res) => {
+  res.status(200).send("message sent successfully.");
 });
 
-// app.listen(process.env.PORT|| 3000, () => {
-//   console.log(`server running on port ${process.env.PORT}`);
-// });
+app.get("/user",(req,res)=>{
+  const obj={id:1,name:"Musharraf"}
+  res.status(200).send(obj)
+})
+
+let users=[
+  {id:1,name:"Musharraf"},
+  {id:2,name:"Asif"},
+  {id:3,name:"Saif"},
+]
+app.get("/test/user",(req,res)=>{
+  // const obj={id:1,name:"Musharraf"}
+  res.status(200).send(users)
+})
+
+app.get("/users/:id",(req,res)=>{
+  let obj= users.find((x)=>x.id===parseInt(req.params.id))
+  res.status(200).send(obj)
+})
+
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`server running on port ${process.env.PORT}`);
+});
+
+
+
+
